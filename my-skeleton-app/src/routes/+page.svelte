@@ -5,28 +5,30 @@
 		<h2 class="h2">handi</h2>
 		<!-- Animated Logo -->
 		<figure>
-			<section class="img-bg" />
+			<section class="img-bg mt-28" />
 			<img
-				src="../assets/skeleton-logo.svg"
-				alt="Skeleton Logo"
-				class="w-64 h-64 md:w-80 md:h-80"
+				src="/src/assets/gnomechild.png"
+				alt="gnomechild"
+				height="320"
+				width="320"
 			/>
 		</figure>
 		<!-- / -->
 		<div class="flex justify-center space-x-2">
 			<a
 				class="btn variant-filled"
-				href="https://skeleton.dev/"
-				target="_blank"
+				href="/raketenliga"
 				rel="noreferrer"
 			>
-				Launch Documentation
+				Raketen Liga
 			</a>
-		</div>
-		<div class="space-y-2">
-			<p>Try editing the following:</p>
-			<p><code class="code">/src/routes/+layout.svelte</code></p>
-			<p><code class="code">/src/routes/+page.svelte</code></p>
+			<a
+				class="btn variant-filled"
+				href="/"
+				rel="noreferrer"
+				>
+				andere
+			</a>
 		</div>
 	</div>
 </div>
