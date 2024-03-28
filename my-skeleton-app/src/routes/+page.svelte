@@ -24,8 +24,9 @@
 			</a>
 			<a
 				class="btn variant-filled"
-				href="/"
+				href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
 				rel="noreferrer"
+				target="_blank"
 				>
 				andere
 			</a>
