@@ -2,12 +2,12 @@
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-10 text-center flex flex-col items-center">
-		<h2 class="h2">handi</h2>
+		<h2 class="h2 font-bold">handi</h2>
 		<!-- Animated Logo -->
 		<figure>
 			<section class="img-bg mt-28" />
 			<img
-				src="/src/assets/gnomechild.png"
+				src={gnomechild}
 				alt="gnomechild"
 				height="320"
 				width="320"
@@ -32,6 +32,10 @@
 		</div>
 	</div>
 </div>
+
+<script lang="ts">
+	import gnomechild from '$lib/assets/gnomechild.png';
+</script>
 
 <style lang="postcss">
 	figure {
