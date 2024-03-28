@@ -1,7 +1,7 @@
 <script lang=ts>
     import { onMount } from 'svelte';
 
-    let leagues = ['Bundesliga', 'Premier League', 'La Liga', 'Serie A'];
+    let leagues = ['Bundesliga', 'Premier League', 'La Liga', 'Serie A', 'Ligue 1'];
     let newLeague = '';
 
     function addLeague() {
@@ -17,16 +17,16 @@
 </script>
 
 <section class="img-bg mt-28"/>
-<div class="grid grid-cols-4 gap-4 justify-items-center mt-48">
-    <h2 class="h2 font-bold col-span-4 mb-10">Raketenligen</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mt-48 mx-20">
+    <h2 class="h2 col-span-full mb-10 ">Raketenligen</h2>
     {#each leagues as league}
     <a class="card p-4" href="/raketenliga/{league}">{league}</a>
     {/each}
     <button
-        class="btn variant-filled col-start-2 col-end-4 mt-10"
+        class="btn variant-filled col-span-full mt-10"
         on:click={addLeague}
         >
-        new league
+        Neue Liga
     </button>
 </div>
 
@@ -66,9 +66,32 @@
     }
 
     .card {
-        @apply w-96 p-4 text-center rounded-lg shadow-md;
+        @apply p-4 text-center rounded-lg shadow-md w-full;
         background-color: var(--color-primary-400);
         color: var(--color-primary-50);
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    @media (min-width: 640px) {
+        .card {
+            flex: 1 1 50%;
+            max-width: 75%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .card {
+            flex: 1 1 33.33%;
+            max-width: 75%;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .card {
+            flex: 1 1 50%;
+            max-width: 75%;
+        }
     }
     .card:hover {
         @apply bg-primary-500;
@@ -76,5 +99,15 @@
 
     .btn {
         @apply w-1/4 p-4 text-center rounded-lg shadow-md;
+    }
+
+    @media (max-width: 639px) {
+        .btn {
+            min-width: 150px;
+        }
+    }
+
+    .h2 {
+        @apply text-3xl font-bold;
     }
     </style>
