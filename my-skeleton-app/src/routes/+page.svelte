@@ -14,7 +14,7 @@
 			/>
 		</figure>
 		<!-- / -->
-		<div class="flex justify-center space-x-2">
+		<div class="flex justify-center space-x-2 mb-20">
 			<a
 				class="btn variant-filled"
 				href="/raketenliga"

@@ -23,7 +23,7 @@
     <a class="card p-4" href="/raketenliga/{league}">{league}</a>
     {/each}
     <button
-        class="btn variant-filled col-span-full mt-10"
+        class="btn variant-filled col-span-full mt-10 mb-10"
         on:click={addLeague}
         >
         Neue Liga
