@@ -16,3 +16,34 @@ class Liga(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Fischart(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Fisch(models.Model):
+    name = models.ForeignKey(Fischart, on_delete=models.CASCADE)
+    laenge = models.IntegerField(default=0)
+    ort = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
+class Angler(models.Model):
+    name = models.CharField(max_length=100)
+    fische = models.ManyToManyField(Fisch)
+    rekord = models.ForeignKey(Fisch, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+ 
+class Rekord(models.Model):
+    fisch = models.ForeignKey(Fisch, on_delete=models.CASCADE)
+    angler = models.ForeignKey(Angler, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.fisch
+
+    
