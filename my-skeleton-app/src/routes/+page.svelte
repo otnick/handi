@@ -14,21 +14,20 @@
 			/>
 		</figure>
 		<!-- / -->
-		<div class="flex justify-center space-x-2 mb-20">
+		<div class="flex justify-center space-x-2">
 			<a
-				class="btn variant-filled"
+				class="btn variant-filled mb-10"
 				href="/raketenliga"
 				rel="noreferrer"
 			>
 				Raketen Liga
 			</a>
 			<a
-				class="btn variant-filled"
-				href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
+				class="btn variant-filled mb-10"
+				href="/fischstats"
 				rel="noreferrer"
-				target="_blank"
 				>
-				andere
+				Fischstats
 			</a>
 		</div>
 	</div>
