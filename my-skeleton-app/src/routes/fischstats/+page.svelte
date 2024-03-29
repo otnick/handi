@@ -1,12 +1,44 @@
 <script lang=ts>
     import { onMount } from 'svelte';
 
-    let leagues = ['Hecht', 'Zander', 'Aal', 'Karpfen', 'Brasse'];
+    let fische = ['Hecht', 'Zander', 'Aal', 'Karpfen', 'Brasse'];
     let newLeague = '';
+    let lastFische = [
+        {
+            name: 'Hecht',
+            length: '1,20m',
+            weight: '5kg',
+            angler: 'Nick'
+        },
+        {
+            name: 'Zander',
+            length: '1,10m',
+            weight: '4kg',
+            angler: 'Tom'
+        },
+        {
+            name: 'Aal',
+            length: '0,80m',
+            weight: '2kg',
+            angler: 'Max'
+        },
+        {
+            name: 'Karpfen',
+            length: '1,50m',
+            weight: '6kg',
+            angler: 'Moritz'
+        },
+        {
+            name: 'Brasse',
+            length: '0,40m',
+            weight: '1kg',
+            angler: 'Lukas'
+        }
+    ]
 
     function addLeague() {
         if (newLeague.trim() !== '') {
-            leagues = [...leagues, newLeague];
+            fische = [...fische, newLeague];
             newLeague = '';
         }
     }
@@ -17,16 +49,34 @@
 </script>
 
 <section class="img-bg mt-28"/>
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mt-48 mx-20">
-    <h2 class="h2 col-span-full mb-10 ">Fischstats</h2>
-    {#each leagues as league}
-    <a class="card p-4" href="/raketenliga/{league}">{league}</a>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
+    <h2 class="h2 col-span-full mt-10">Rekorde</h2>
+    {#each fische as fisch}
+    <a class="card card-2 p-4" href="/raketenliga/{fisch}">{fisch}</a>
     {/each}
+    <h2 class="h2 col-span-full mt-10">Letzte Fische</h2>
+    <div class="card card col-span-full">
+        <div class="grid grid-cols-3 gap-4">
+            {#each lastFische as fisch}
+            <div class="flex flex-col items-center">
+                <p class="font-bold">{fisch.name}</p>
+                <p>{fisch.length} {fisch.weight}</p>
+                <p>{fisch.angler}</p>
+            </div>
+            {/each}
+        </div>
+    </div>
     <button
-        class="btn variant-filled col-span-full mt-10 mb-10"
+        class="btn variant-filled col-span-2 mt-10 mb-10"
         on:click={addLeague}
         >
         Neuer Fisch
+    </button>
+    <button
+        class="btn variant-filled col-span-2 mt-10 mb-10"
+        on:click={addLeague}
+        >
+        Neuer Angler
     </button>
 </div>
 
@@ -73,27 +123,35 @@
         max-width: 100%;
     }
 
+    .card-2 {
+        @apply p-4 text-center rounded-lg shadow-md w-full;
+        background-color: var(--color-primary-400);
+        color: var(--color-primary-50);
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
     @media (min-width: 640px) {
-        .card {
+        .card-2 {
             flex: 1 1 50%;
             max-width: 75%;
         }
     }
 
     @media (min-width: 768px) {
-        .card {
+        .card-2 {
             flex: 1 1 33.33%;
             max-width: 75%;
         }
     }
 
     @media (min-width: 1024px) {
-        .card {
+        .card-2 {
             flex: 1 1 50%;
             max-width: 75%;
         }
     }
-    .card:hover {
+    .card-2:hover {
         @apply bg-primary-500;
     }
 
