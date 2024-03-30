@@ -24,26 +24,25 @@ class Fischart(models.Model):
         return self.name
 
 class Fisch(models.Model):
-    name = models.ForeignKey(Fischart, on_delete=models.CASCADE)
+    name = models.ForeignKey(Fischart, on_delete=models.CASCADE, related_name='fische')
     laenge = models.IntegerField(default=0)
     ort = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-    
+
 class Angler(models.Model):
     name = models.CharField(max_length=100)
-    fische = models.ManyToManyField(Fisch)
-    rekord = models.ForeignKey(Fisch, on_delete=models.CASCADE)
+    fische = models.ManyToManyField(Fisch, related_name='angler_fische')
+    rekord = models.ForeignKey(Fisch, on_delete=models.CASCADE, related_name='angler_rekord')
 
     def __str__(self):
         return self.name
- 
+
 class Rekord(models.Model):
     fisch = models.ForeignKey(Fisch, on_delete=models.CASCADE)
-    angler = models.ForeignKey(Angler, on_delete=models.CASCADE)
+    angler = models.ForeignKey(Angler, on_delete=models.CASCADE, related_name='rekords')
 
     def __str__(self):
         return self.fisch
-
     
