@@ -1,5 +1,6 @@
 <script lang=ts>
     import { onMount } from 'svelte';
+    import { fetchFischart } from '$lib/api';
 
     let fische = ['Hecht', 'Zander', 'Aal', 'Karpfen', 'Brasse'];
     let newLeague = '';
@@ -45,7 +46,13 @@
 
     onMount(() => {
         // Fetch leagues from API or initialize with default values
+        fetchFischart().then((data: any) => {
+            fische = data;
+            console.log(fische);
+        });
     });
+
+
 </script>
 
 <section class="img-bg mt-28"/>
