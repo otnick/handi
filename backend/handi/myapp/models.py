@@ -35,6 +35,7 @@ class Fisch(models.Model):
 class Angler(models.Model):
     name = models.CharField(max_length=100)
     fische = models.ManyToManyField(Fisch, related_name='angler', blank=True)
+    koeder = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name

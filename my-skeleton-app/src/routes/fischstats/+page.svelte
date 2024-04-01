@@ -2,6 +2,8 @@
     import { onMount } from 'svelte';
     import { fetchFischart } from '$lib/api';
 
+    const arten = fetchFischart();
+
     let fische = ['Hecht', 'Zander', 'Aal', 'Karpfen', 'Brasse'];
     let newLeague = '';
     let lastFische = [
@@ -73,6 +75,7 @@
             {/each}
         </div>
     </div>
+    <h2 class="h2 col-span-full mt-10">Angler</h2>
     <button
         class="btn variant-filled col-span-2 mt-10 mb-10"
         on:click={addLeague}
