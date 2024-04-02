@@ -8,7 +8,8 @@ export interface IFisch {
     id: number;
     name: string;
     art: IFischart;
-    leange: number;
+    laenge: number;
+    ort: string;
 }
 
 export interface IAngler {

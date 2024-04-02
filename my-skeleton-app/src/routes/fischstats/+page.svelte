@@ -1,76 +1,47 @@
 <script lang=ts>
     import { onMount } from 'svelte';
-    import { fetchFischart } from '$lib/api';
+    import { fetchFischart, fetchFisch, createFisch } from '$lib/api';
+    import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
 
-    const arten = fetchFischart();
-
-    let fische = ['Hecht', 'Zander', 'Aal', 'Karpfen', 'Brasse'];
-    let newLeague = '';
-    let lastFische = [
-        {
-            name: 'Hecht',
-            length: '1,20m',
-            weight: '5kg',
-            angler: 'Nick'
-        },
-        {
-            name: 'Zander',
-            length: '1,10m',
-            weight: '4kg',
-            angler: 'Tom'
-        },
-        {
-            name: 'Aal',
-            length: '0,80m',
-            weight: '2kg',
-            angler: 'Max'
-        },
-        {
-            name: 'Karpfen',
-            length: '1,50m',
-            weight: '6kg',
-            angler: 'Moritz'
-        },
-        {
-            name: 'Brasse',
-            length: '0,40m',
-            weight: '1kg',
-            angler: 'Lukas'
-        }
-    ]
-
-    function addLeague() {
-        if (newLeague.trim() !== '') {
-            fische = [...fische, newLeague];
-            newLeague = '';
-        }
+    let fisch: IFisch = {
+        id: 2,
+        name: 'Barsch',
+        laenge: 20,
+        ort: 'Lienen Kanal',
+        art: {
+                id: 3,
+                name: 'Barsch',
+            },
     }
 
-    onMount(() => {
-        // Fetch leagues from API or initialize with default values
-        fetchFischart().then((data: any) => {
-            fische = data;
-            console.log(fische);
-        });
+    let arten: IFischart[] = [];
+    let fische: IFisch[] = []
+    
+
+    onMount(async () => {
+        arten = await fetchFischart();
+        console.log(arten);
+        fische = await fetchFisch();
+        console.log(fische);
     });
 
 
 </script>
 
-<section class="img-bg mt-28"/>
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
-    <h2 class="h2 col-span-full mt-10">Rekorde</h2>
-    {#each fische as fisch}
-    <a class="card card-2 p-4" href="/raketenliga/{fisch}">{fisch}</a>
-    {/each}
+    <section class="img-bg mt-28"/>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
+        <h2 class="h2 col-span-full mt-10">Rekorde</h2>
+        {#each arten as art}
+        <a class="card card-2 p-4" href="/raketenliga/{art.name}">{art.name}</a>
+        {/each}
     <h2 class="h2 col-span-full mt-10">Letzte Fische</h2>
-    <div class="card card col-span-full">
+    <div class="card col-span-full">
         <div class="grid grid-cols-3 gap-4">
-            {#each lastFische as fisch}
+            {#each fische as fisch}
             <div class="flex flex-col items-center">
                 <p class="font-bold">{fisch.name}</p>
-                <p>{fisch.length} {fisch.weight}</p>
-                <p>{fisch.angler}</p>
+                <p>{fisch.laenge} cm</p>
+                <p>{fisch.ort}</p>
             </div>
             {/each}
         </div>
@@ -78,13 +49,12 @@
     <h2 class="h2 col-span-full mt-10">Angler</h2>
     <button
         class="btn variant-filled col-span-2 mt-10 mb-10"
-        on:click={addLeague}
+        on:click={() => createFisch(fisch)}
         >
         Neuer Fisch
     </button>
     <button
         class="btn variant-filled col-span-2 mt-10 mb-10"
-        on:click={addLeague}
         >
         Neuer Angler
     </button>

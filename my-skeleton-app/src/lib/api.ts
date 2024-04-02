@@ -1,3 +1,4 @@
+import type { IFischart, IFisch, IRekord, IAngler } from './types';
 const BASE_URL = 'https://nickot.pythonanywhere.com/api/';
 const FISCHSTATS_URL = [
     "fischart",
@@ -30,7 +31,7 @@ export async function fetchFisch() {
     return data;
 }
 
-export async function createFisch(fischData: unknown) {
+export async function createFisch(fischData: IFisch) {
     const response = await fetch(`${BASE_URL}${FISCHSTATS_URL[2]}/`, {
         method: 'POST',
         headers: {
