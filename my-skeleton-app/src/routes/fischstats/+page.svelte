@@ -1,21 +1,20 @@
 <script lang=ts>
     import { onMount } from 'svelte';
-    import { fetchFischart, fetchFisch, createFisch } from '$lib/api';
+    import { fetchFischart, fetchFisch, createFisch, fetchAngler } from '$lib/api';
     import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
 
     let fisch: IFisch = {
-        id: 2,
         name: 'Barsch',
-        laenge: 20,
+        laenge: 30,
         ort: 'Lienen Kanal',
-        art: {
-                id: 3,
-                name: 'Barsch',
-            },
+        art: 3,
+        id: null,
     }
 
     let arten: IFischart[] = [];
     let fische: IFisch[] = []
+
+    let anglers: IAngler[] = [];
     
 
     onMount(async () => {
@@ -23,6 +22,8 @@
         console.log(arten);
         fische = await fetchFisch();
         console.log(fische);
+        anglers = await fetchAngler();
+        console.log(anglers);
     });
 
 
@@ -34,31 +35,42 @@
         {#each arten as art}
         <a class="card card-2 p-4" href="/raketenliga/{art.name}">{art.name}</a>
         {/each}
-    <h2 class="h2 col-span-full mt-10">Letzte Fische</h2>
-    <div class="card col-span-full">
-        <div class="grid grid-cols-3 gap-4">
-            {#each fische as fisch}
-            <div class="flex flex-col items-center">
-                <p class="font-bold">{fisch.name}</p>
-                <p>{fisch.laenge} cm</p>
-                <p>{fisch.ort}</p>
+        <h2 class="h2 col-span-full mt-10">Letzte Fische</h2>
+        <div class="card col-span-full">
+            <div class="grid grid-cols-3 gap-4">
+                {#each fische as fisch}
+                <div class="flex flex-col items-center">
+                    <p class="font-bold">{fisch.name}</p>
+                    <p>{fisch.laenge} cm</p>
+                    <p>{fisch.ort}</p>
+                </div>
+                {/each}
             </div>
-            {/each}
         </div>
+        <h2 class="h2 col-span-full mt-10">Angler</h2>
+        {#each anglers as angler}
+        <a class="card card-2 p-4 col-span-2" href="/raketenliga/{angler.name}">
+            <div class="flex flex-col items-center">
+                <p class="font-bold">{angler.name}</p>
+                <p>Fische: {angler.fische}</p>
+                <p>Verlorene Köder: {angler.koeder}</p>
+            </div>
+        </a>
+        {/each}
     </div>
-    <h2 class="h2 col-span-full mt-10">Angler</h2>
-    <button
-        class="btn variant-filled col-span-2 mt-10 mb-10"
-        on:click={() => createFisch(fisch)}
-        >
-        Neuer Fisch
-    </button>
-    <button
-        class="btn variant-filled col-span-2 mt-10 mb-10"
-        >
-        Neuer Angler
-    </button>
-</div>
+    <div class="sticky">
+        <button
+            class="btn variant-filled col-span-2 mt-10 mb-10"
+            on:click={() => createFisch(fisch)}
+            >
+            Neuer Fisch
+        </button>
+        <button
+            class="btn variant-filled col-span-2 mt-10 mb-10"
+            >
+            Neuer Angler
+        </button>
+    </div>
 
 
 

@@ -5,9 +5,9 @@ export interface IFischart {
 }
 
 export interface IFisch {
-    id: number;
+    id: number | null;
     name: string;
-    art: IFischart;
+    art: number;
     laenge: number;
     ort: string;
 }
