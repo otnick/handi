@@ -31,13 +31,13 @@
 
     <section class="img-bg mt-28"/>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
-        <h2 class="h2 col-span-full mt-10">Rekorde</h2>
+        <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Rekorde</h2>
         {#each arten as art}
-        <a class="card card-2 p-4" href="/raketenliga/{art.name}">{art.name}</a>
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{art.name}">{art.name}</a>
         {/each}
-        <h2 class="h2 col-span-full mt-10">Letzte Fische</h2>
-        <div class="card col-span-full">
-            <div class="grid grid-cols-3 gap-4">
+        <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Letzte Fische</h2>
+        <div class="card col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4">
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {#each fische as fisch}
                 <div class="flex flex-col items-center">
                     <p class="font-bold">{fisch.name}</p>
@@ -47,9 +47,9 @@
                 {/each}
             </div>
         </div>
-        <h2 class="h2 col-span-full mt-10">Angler</h2>
+        <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Angler</h2>
         {#each anglers as angler}
-        <a class="card card-2 p-4 col-span-2" href="/raketenliga/{angler.name}">
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4" href="/raketenliga/{angler.name}">
             <div class="flex flex-col items-center">
                 <p class="font-bold">{angler.name}</p>
                 <p>Fische: {angler.fische}</p>
@@ -58,16 +58,16 @@
         </a>
         {/each}
     </div>
-    <div class="sticky">
+    <div class="sticky bottom-0 flex justify-around">
         <button
-            class="btn variant-filled col-span-2 mt-10 mb-10"
+            class="btn variant-filled col-span-2 mt-10 mb-10 font-bold"
             on:click={() => createFisch(fisch)}
-            >
+        >
             Neuer Fisch
         </button>
         <button
-            class="btn variant-filled col-span-2 mt-10 mb-10"
-            >
+            class="btn variant-filled col-span-2 mt-10 mb-10 font-bold"
+        >
             Neuer Angler
         </button>
     </div>
