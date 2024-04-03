@@ -1,7 +1,12 @@
 <script lang="ts">
+    import { RangeSlider } from '@skeletonlabs/skeleton';
+    
 	export let showModal: boolean; // boolean
 
 	let dialog: any; // HTMLDialogElement
+
+    let max = 150;
+    let length = 50;
 
 	$: if (dialog && showModal) dialog.showModal();
 </script>
@@ -17,7 +22,7 @@
 		<slot name="header" />
         <p class="font-bold">Neuer Fisch</p>
 		<hr />
-        <label class="label">
+        <label class="label mt-3">
             <span>Fischart</span>
             <select class="select">
                 <option value="1">Hecht</option>
@@ -26,19 +31,36 @@
                 <option value="4">Karpfen</option>
             </select>
         </label>
+        <label class="label mt-3">
+            <span>Angler</span>
+            <select class="select">
+                <option value="1">Nick</option>
+                <option value="2">Jo</option>
+            </select>
+        </label>
+            <RangeSlider name="range-slider" bind:value={length} max={150} step={1}>
+                <div class="flex justify-between items-center mt-3">
+                    <div class="font-bold">Länge</div>
+                    <div class="text-xs">{length} cm</div>
+                </div>
+            </RangeSlider>
 		<slot />
 		<hr />
 		<!-- svelte-ignore a11y-autofocus -->
-		<button autofocus on:click={() => dialog.close()}>close modal</button>
+        <span class="flex justify-between">
+            <button autofocus on:click={() => dialog.close()}>Close</button>
+            <button autofocus on:click={() => dialog.close()}>Speichern</button>
+        </span>
 	</div>
 </dialog>
 
 <style>
 	dialog {
-		max-width: 32em;
+		max-width: 16em;
 		border-radius: 0.2em;
 		border: none;
 		padding: 0;
+        width: 50% ;
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
