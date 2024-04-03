@@ -13,12 +13,14 @@ export interface IFisch {
 }
 
 export interface IAngler {
+    id: number;
     name: string;
     fische: IFisch[];
     koeder: number;
 }
 
 export interface IRekord {
+    id: number;
     angler: IAngler;
     fisch: IFisch;
 }

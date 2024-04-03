@@ -2,6 +2,10 @@
     import { onMount } from 'svelte';
     import { fetchFischart, fetchFisch, createFisch, fetchAngler } from '$lib/api';
     import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
+    import NeuerAngler from '$lib/Modals/NeuerAngler.svelte';
+    import NeuerFisch from '$lib/Modals/NeuerFisch.svelte';
+
+    let showModal = false;
 
     let fisch: IFisch = {
         name: 'Barsch',
@@ -29,6 +33,7 @@
 
 </script>
 
+    <NeuerFisch bind:showModal />
     <section class="img-bg mt-28"/>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Rekorde</h2>
@@ -36,23 +41,21 @@
         <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{art.name}">{art.name}</a>
         {/each}
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Letzte Fische</h2>
-        <div class="card col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4">
-            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {#each fische as fisch}
-                <div class="flex flex-col items-center">
-                    <p class="font-bold">{fisch.name}</p>
-                    <p>{fisch.laenge} cm</p>
-                    <p>{fisch.ort}</p>
-                </div>
-                {/each}
+        {#each fische as fisch}
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{fisch.name}">
+            <div class="flex flex-col items-center">
+                <p class="font-bold">{fisch.name}</p>
+                <p>{fisch.laenge} cm</p>
+                <p>{fisch.ort}</p>
             </div>
-        </div>
+        </a>
+        {/each}
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Angler</h2>
         {#each anglers as angler}
-        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4" href="/raketenliga/{angler.name}">
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-2  " href="/fischstats/angler/{angler.id}">
             <div class="flex flex-col items-center">
                 <p class="font-bold">{angler.name}</p>
-                <p>Fische: {angler.fische}</p>
+                <p>Fische: {angler.fische.length}</p>
                 <p>Verlorene Köder: {angler.koeder}</p>
             </div>
         </a>
@@ -61,7 +64,7 @@
     <div class="sticky bottom-0 flex justify-around">
         <button
             class="btn variant-filled col-span-2 mt-10 mb-10 font-bold"
-            on:click={() => createFisch(fisch)}
+            on:click={() => (showModal = true)}
         >
             Neuer Fisch
         </button>
@@ -123,26 +126,7 @@
         max-width: 100%;
     }
 
-    @media (min-width: 640px) {
-        .card-2 {
-            flex: 1 1 50%;
-            max-width: 75%;
-        }
-    }
-
-    @media (min-width: 768px) {
-        .card-2 {
-            flex: 1 1 33.33%;
-            max-width: 75%;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .card-2 {
-            flex: 1 1 50%;
-            max-width: 75%;
-        }
-    }
+    
     .card-2:hover {
         @apply bg-primary-500;
     }
