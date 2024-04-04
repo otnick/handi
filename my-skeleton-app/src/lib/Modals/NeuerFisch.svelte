@@ -23,7 +23,7 @@
         <p class="font-bold">Neuer Fisch</p>
 		<hr />
         <label class="label mt-3">
-            <span>Fischart</span>
+            <span class="font-bold">Fischart</span>
             <select class="select">
                 <option value="1">Hecht</option>
                 <option value="2">Zander</option>
@@ -32,7 +32,7 @@
             </select>
         </label>
         <label class="label mt-3">
-            <span>Angler</span>
+            <span class="font-bold">Angler</span>
             <select class="select">
                 <option value="1">Nick</option>
                 <option value="2">Jo</option>

@@ -29,9 +29,24 @@
 		border-radius: 0.2em;
 		border: none;
 		padding: 0;
+		color: aqua;
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
+		transition: background-color 0.3s ease-in-out;
+	}
+
+	dialog[open]::backdrop {
+		animation: fade 0.2s ease-out;
+	}
+
+	@keyframes fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 	dialog > div {
 		padding: 1em;
