@@ -8,7 +8,6 @@
     let showModal = false;
 
     let fisch: IFisch = {
-        name: 'Barsch',
         laenge: 30,
         ort: 'Lienen Kanal',
         art: 3,
@@ -42,9 +41,9 @@
         {/each}
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Letzte Fische</h2>
         {#each fische as fisch}
-        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{fisch.name}">
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{fisch.art}">
             <div class="flex flex-col items-center">
-                <p class="font-bold">{fisch.name}</p>
+                <p class="font-bold">{fisch.art}</p>
                 <p>{fisch.laenge} cm</p>
                 <p>{fisch.ort}</p>
             </div>
@@ -88,7 +87,7 @@
     .img-bg {
         @apply absolute z-[-1] rounded-full blur-[50px] transition-all;
         animation: pulse 10s cubic-bezier(0, 0, 0, 0.1) infinite,
-            glow 5s ease infinite;
+            glow 10s ease infinite;
     }
     @keyframes glow {
         0% {
@@ -106,7 +105,7 @@
     }
     @keyframes pulse {
         50% {
-            transform: translate(-50%, -80%) scale(1.5);
+            transform: translate(-50%, -90%) scale(1.5);
         }
     }
 

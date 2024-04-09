@@ -1,5 +1,8 @@
 <script lang="ts">
     import { RangeSlider } from '@skeletonlabs/skeleton';
+	import { fetchFischart, fetchFisch, createFisch, fetchAngler } from '$lib/api';
+    import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
+	import { onMount } from 'svelte';
     
 	export let showModal: boolean; // boolean
 
@@ -7,6 +10,37 @@
 
     let max = 150;
     let length = 50;
+
+	let fisch: IFisch = {
+        laenge: 50,
+        ort: '',
+        art: 0,
+        id: null,
+    }
+
+    let arten: IFischart[] = [];
+    let fische: IFisch[] = []
+
+    let anglers: IAngler[] = [];
+    
+
+    onMount(async () => {
+		console.log('Modal');
+        arten = await fetchFischart();
+        console.log('Modal', arten);
+        fische = await fetchFisch();
+        console.log('Modal', fische);
+        anglers = await fetchAngler();
+        console.log('Modal', anglers);
+    });
+
+	async function saveFisch(){
+		console.log('saveFisch', fisch);
+		fisch.laenge = length;
+		
+		await createFisch(fisch);
+		dialog.close();
+	}
 
 	$: if (dialog && showModal) dialog.showModal();
 </script>
@@ -25,17 +59,17 @@
         <label class="label mt-3">
             <span class="font-bold">Fischart</span>
             <select class="select">
-                <option value="1">Hecht</option>
-                <option value="2">Zander</option>
-                <option value="3">Barsch</option>
-                <option value="4">Karpfen</option>
+				{#each arten as art}
+                <option class="option" value="{art.id}">{art.name}</option>
+				{/each}
             </select>
         </label>
         <label class="label mt-3">
             <span class="font-bold">Angler</span>
             <select class="select">
-                <option value="1">Nick</option>
-                <option value="2">Jo</option>
+				{#each anglers as angler}
+                <option class="option" value="{angler.id}">{angler.name}</option>
+				{/each}
             </select>
         </label>
             <RangeSlider name="range-slider" bind:value={length} max={150} step={1}>
@@ -47,8 +81,8 @@
 		<slot />
 		<hr />
 		<!-- svelte-ignore a11y-autofocus -->
-        <span class="flex justify-between">
-            <button autofocus on:click={() => dialog.close()}>Close</button>
+        <span class="flex justify-between mt-2">
+            <button autofocus on:click={() => saveFisch()}>Close</button>
             <button autofocus on:click={() => dialog.close()}>Speichern</button>
         </span>
 	</div>
@@ -92,5 +126,14 @@
 	}
 	button {
 		display: block;
+	}
+
+	.select{
+		color: rgb(0, 0, 0);
+		background-color: rgba(25, 29, 28, 0.315);
+	}
+	.option{
+		color: rgb(0, 0, 0);
+		background-color: rgba(25, 29, 28, 0.315);
 	}
 </style>

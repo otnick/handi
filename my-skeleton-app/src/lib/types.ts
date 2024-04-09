@@ -6,7 +6,6 @@ export interface IFischart {
 
 export interface IFisch {
     id: number | null;
-    name: string;
     art: number;
     laenge: number;
     ort: string;

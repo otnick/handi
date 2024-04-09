@@ -29,7 +29,6 @@
 		border-radius: 0.2em;
 		border: none;
 		padding: 0;
-		color: aqua;
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
