@@ -5,8 +5,8 @@ export interface IFischart {
 }
 
 export interface IFisch {
-    id: number | null;
-    art: number;
+    id: number;
+    fischart: number;
     laenge: number;
     ort: string;
 }
@@ -14,7 +14,7 @@ export interface IFisch {
 export interface IAngler {
     id: number;
     name: string;
-    fische: IFisch[];
+    fische: number[];
     koeder: number;
 }
 

@@ -43,6 +43,18 @@ export async function createFisch(fischData: IFisch) {
     return data;
 }
 
+export async function patchAngler(anglerData: IAngler) {
+    const response = await fetch(`${BASE_URL}${FISCHSTATS_URL[1]}/${anglerData.id}/`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(anglerData),
+    });
+    const data = await response.json();
+    return data;
+}
+
 export async function fetchRekord() {
     const response = await fetch(`${BASE_URL}${FISCHSTATS_URL[3]}/`);
     const data = await response.json();

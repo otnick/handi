@@ -1,6 +1,6 @@
 <script lang="ts">
     import { RangeSlider } from '@skeletonlabs/skeleton';
-	import { fetchFischart, fetchFisch, createFisch, fetchAngler } from '$lib/api';
+	import { fetchFischart, fetchFisch, createFisch, fetchAngler, patchAngler } from '$lib/api';
     import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
 	import { onMount } from 'svelte';
     
@@ -12,11 +12,13 @@
     let length = 50;
 
 	let fisch: IFisch = {
-        laenge: 50,
-        ort: '',
-        art: 0,
-        id: null,
-    }
+		laenge: 30,
+		ort: 'Lienen Kanal',
+		fischart: 3,
+		id: 0,
+	};
+
+	let angler: IAngler;
 
     let arten: IFischart[] = [];
     let fische: IFisch[] = []
@@ -36,9 +38,13 @@
 
 	async function saveFisch(){
 		console.log('saveFisch', fisch);
-		fisch.laenge = length;
-		
+		fisch.ort = dialog.querySelector('input').value;
+		fisch.fischart = dialog.querySelector('select').value;
 		await createFisch(fisch);
+
+		angler.fische.push(fisch.id);
+		await patchAngler(angler);
+
 		dialog.close();
 	}
 
@@ -72,18 +78,22 @@
 				{/each}
             </select>
         </label>
-            <RangeSlider name="range-slider" bind:value={length} max={150} step={1}>
-                <div class="flex justify-between items-center mt-3">
-                    <div class="font-bold">Länge</div>
-                    <div class="text-xs">{length} cm</div>
-                </div>
-            </RangeSlider>
+		<label class="label">
+			<span class="font-bold">Ort</span>
+			<input class="input" type="text" placeholder="Ort" />
+		</label>
+		<RangeSlider name="range-slider" bind:value={length} max={150} step={1}>
+			<div class="flex justify-between items-center mt-3">
+				<div class="font-bold">Länge</div>
+				<div class="text-xs">{length} cm</div>
+			</div>
+		</RangeSlider>
 		<slot />
 		<hr />
 		<!-- svelte-ignore a11y-autofocus -->
         <span class="flex justify-between mt-2">
-            <button autofocus on:click={() => saveFisch()}>Close</button>
-            <button autofocus on:click={() => dialog.close()}>Speichern</button>
+            <button autofocus on:click={() => dialog.close()}>Close</button>
+            <button autofocus on:click={() => saveFisch()}>Speichern</button>
         </span>
 	</div>
 </dialog>
@@ -133,6 +143,10 @@
 		background-color: rgba(25, 29, 28, 0.315);
 	}
 	.option{
+		color: rgb(0, 0, 0);
+		background-color: rgba(25, 29, 28, 0.315);
+	}
+	.input{
 		color: rgb(0, 0, 0);
 		background-color: rgba(25, 29, 28, 0.315);
 	}

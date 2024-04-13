@@ -4,14 +4,15 @@
     import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
     import NeuerAngler from '$lib/Modals/NeuerAngler.svelte';
     import NeuerFisch from '$lib/Modals/NeuerFisch.svelte';
+	import { filter } from '@skeletonlabs/skeleton';
 
     let showModal = false;
 
     let fisch: IFisch = {
         laenge: 30,
         ort: 'Lienen Kanal',
-        art: 3,
-        id: null,
+        fischart: 3,
+        id: 0,
     }
 
     let arten: IFischart[] = [];
@@ -41,11 +42,12 @@
         {/each}
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Letzte Fische</h2>
         {#each fische as fisch}
-        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{fisch.art}">
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{fisch.fischart}">
             <div class="flex flex-col items-center">
-                <p class="font-bold">{fisch.art}</p>
+                <p class="font-bold">{arten.find(art => art.id === fisch.fischart)?.name}</p>
                 <p>{fisch.laenge} cm</p>
                 <p>{fisch.ort}</p>
+                <p>{anglers.find(angler => angler.fische.includes(fisch))?.name}</p>
             </div>
         </a>
         {/each}
