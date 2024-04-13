@@ -47,7 +47,7 @@
                 <p class="font-bold">{arten.find(art => art.id === fisch.fischart)?.name}</p>
                 <p>{fisch.laenge} cm</p>
                 <p>{fisch.ort}</p>
-                <p>{anglers.find(angler => angler.fische.includes(fisch))?.name}</p>
+                <p>{anglers.find(angler => angler.fische.includes(fisch.id))?.name}</p>
             </div>
         </a>
         {/each}
