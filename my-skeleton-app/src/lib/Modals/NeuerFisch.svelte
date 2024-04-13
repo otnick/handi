@@ -11,17 +11,12 @@
     let max = 150;
     let length = 50;
 
-	let fisch: IFisch = {
-		laenge: 30,
-		ort: 'Lienen Kanal',
-		fischart: 3,
-		id: 0,
-	};
+	let fisch: IFisch = { id: 0, fischart: 0, laenge: 0, ort: '' };
 
 	let angler: IAngler;
 
     let arten: IFischart[] = [];
-    let fische: IFisch[] = []
+    let fisches: IFisch[] = []
 
     let anglers: IAngler[] = [];
     
@@ -30,20 +25,34 @@
 		console.log('Modal');
         arten = await fetchFischart();
         console.log('Modal', arten);
-        fische = await fetchFisch();
-        console.log('Modal', fische);
+        fisches = await fetchFisch();
+        // console.log('Modal', fische);
         anglers = await fetchAngler();
         console.log('Modal', anglers);
     });
 
-	async function saveFisch(){
-		console.log('saveFisch', fisch);
+	async function saveFisch() {
 		fisch.ort = dialog.querySelector('input').value;
-		fisch.fischart = dialog.querySelector('select').value;
+		fisch.laenge = length;
+		fisch.fischart = dialog.querySelector('#artSelect').value;
+		console.log('saveFisch', fisch);
 		await createFisch(fisch);
 
-		angler.fische.push(fisch.id);
-		await patchAngler(angler);
+		fisches = await fetchFisch();
+
+		const selectedAnglerId = dialog.querySelector('#anglerSelect').value;
+		console.log('selectedAnglerId', selectedAnglerId);
+
+		const selectedAngler = anglers.find((a) => a.id == selectedAnglerId);
+		console.log('selectedAngler', selectedAngler);
+
+		if (selectedAngler) {
+			selectedAngler.fische = selectedAngler.fische || []; // Initialize if undefined
+			selectedAngler.fische.push(fisches[fisches.length-1].id);
+			await patchAngler(selectedAngler);
+		} else {
+			console.error('Selected angler not found!');
+		}
 
 		dialog.close();
 	}
@@ -64,7 +73,7 @@
 		<hr />
         <label class="label mt-3">
             <span class="font-bold">Fischart</span>
-            <select class="select">
+            <select class="select" id="artSelect">
 				{#each arten as art}
                 <option class="option" value="{art.id}">{art.name}</option>
 				{/each}
@@ -72,7 +81,7 @@
         </label>
         <label class="label mt-3">
             <span class="font-bold">Angler</span>
-            <select class="select">
+            <select class="select" id="anglerSelect">
 				{#each anglers as angler}
                 <option class="option" value="{angler.id}">{angler.name}</option>
 				{/each}
@@ -80,7 +89,7 @@
         </label>
 		<label class="label">
 			<span class="font-bold">Ort</span>
-			<input class="input" type="text" placeholder="Ort" />
+			<input class="input" type="text" placeholder="Ort, Gewässer" />
 		</label>
 		<RangeSlider name="range-slider" bind:value={length} max={150} step={1}>
 			<div class="flex justify-between items-center mt-3">

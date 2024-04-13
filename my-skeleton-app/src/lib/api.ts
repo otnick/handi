@@ -90,3 +90,19 @@ export async function createAngler(anglerData: unknown) {
   const data = await response.json();
   return data;
 }
+
+export async function deleteAngler(anglerId: number) {
+    const response = await fetch(`${BASE_URL}${FISCHSTATS_URL[1]}/${anglerId}/`, {
+        method: 'DELETE',
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function deleteFish(fischId: number) {
+    const response = await fetch(`${BASE_URL}${FISCHSTATS_URL[2]}/${fischId}/`, {
+        method: 'DELETE',
+    });
+    const data = await response.json();
+    return data;
+}
