@@ -3,6 +3,7 @@
     import { fetchFischart, fetchFisch, createFisch, fetchAngler, deleteAngler } from '$lib/api';
     import type { IFischart, IFisch, IAngler, IRekord } from '$lib/types';
     import { page } from '$app/stores';
+    import Backlight from '$lib/Components/Backlight.svelte';
 
     let anglers: any;
 
@@ -38,10 +39,13 @@
     console.log(anglerId);
 </script>
 
-<h1>Angler: {angler.name} Köder: {angler.koeder}</h1>
-<p> Gefangene Fische:</p>
-{#each anglerFisches as fisch}
-    <p>{fisch.fischart}</p>
-    <p>{fisch.laenge} cm</p>
-    <p>{fisch.ort}</p>
-{/each}
+<Backlight />
+<div class="card p-4 mt-10 mx-10">
+    <h1 class="h2 font-bold">Angler: {angler.name} Köder: {angler.koeder}</h1>
+    <p> Gefangene Fische:</p>
+    {#each anglerFisches as fisch}
+        <p class="font-bold">{fisch.fischart}</p>
+        <p class="font-bold">{fisch.laenge} cm</p>
+        <p class="font-bold">{fisch.ort}</p>
+    {/each}
+</div>

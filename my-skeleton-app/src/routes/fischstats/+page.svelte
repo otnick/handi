@@ -5,6 +5,7 @@
     import NeuerAngler from '$lib/Modals/NeuerAngler.svelte';
     import NeuerFisch from '$lib/Modals/NeuerFisch.svelte';
 	import { filter } from '@skeletonlabs/skeleton';
+    import Backlight from '$lib/Components/Backlight.svelte';
 
     let showModal = false;
 
@@ -34,15 +35,15 @@
 </script>
 
     <NeuerFisch bind:showModal />
-    <section class="img-bg mt-28"/>
+    <Backlight />
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Rekorde</h2>
         {#each arten as art}
-        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{art.name}">{art.name}</a>
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/fischstats/{art.name}">{art.name}</a>
         {/each}
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Letzte Fische</h2>
         {#each fische as fisch}
-        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/raketenliga/{fisch.fischart}">
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/fischstats/fisch/{fisch.id}/">
             <div class="flex flex-col items-center">
                 <p class="font-bold">{arten.find(art => art.id === fisch.fischart)?.name}</p>
                 <p>{fisch.laenge} cm</p>
@@ -79,37 +80,6 @@
 
 
 <style scoped>
-    .img-bg {
-        @apply w-64 h-64 md:w-80 md:h-80;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .img-bg {
-        @apply absolute z-[-1] rounded-full blur-[50px] transition-all;
-        animation: pulse 10s cubic-bezier(0, 0, 0, 0.1) infinite,
-            glow 10s ease infinite;
-    }
-    @keyframes glow {
-        0% {
-            @apply bg-primary-400/50;
-        }
-        33% {
-            @apply bg-secondary-400/50;
-        }
-        66% {
-            @apply bg-tertiary-400/50;
-        }
-        100% {
-            @apply bg-primary-400/50;
-        }
-    }
-    @keyframes pulse {
-        50% {
-            transform: translate(-50%, -90%) scale(1.5);
-        }
-    }
 
     .card {
         @apply p-4 text-center rounded-lg shadow-md w-full;

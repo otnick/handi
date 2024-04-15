@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { IFischart, IFisch, IRekord, IAngler } from './types';
 const BASE_URL = 'https://nickot.pythonanywhere.com/api/';
 const FISCHSTATS_URL = [
@@ -103,6 +104,12 @@ export async function deleteFish(fischId: number) {
     const response = await fetch(`${BASE_URL}${FISCHSTATS_URL[2]}/${fischId}/`, {
         method: 'DELETE',
     });
-    const data = await response.json();
-    return data;
+    // Überprüfe, ob die Antwort gültig ist
+    if (response.ok) {
+        // Wenn die Antwort in Ordnung ist, gib nichts zurück
+        return;
+    } else {
+        // Wenn die Antwort nicht in Ordnung ist, wirf einen Fehler
+        throw new Error('Fehler beim Löschen des Fisches');
+    }
 }
