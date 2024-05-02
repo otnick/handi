@@ -17,7 +17,7 @@
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = '../src/lib/assets/hering.glb';
+    const heringPath = '/src/lib/assets/hering.glb';
   
     function init() {
 
@@ -79,7 +79,9 @@
                 // Das Modell wurde erfolgreich geladen
                 const fish = gltf.scene;
                 fish.position.set( 20, 20, 10 );
+                fish.scale.set( 5, 5, 5 );
                 scene.add( fish );
+                moveFish(fish);
 
                 mixer = new THREE.AnimationMixer(fish);
 
@@ -233,6 +235,31 @@
 
     renderer.render( scene, camera );
 
+    }
+
+    function moveFish(fish: any) {
+        const randomX = Math.random() * 10;
+        const randomY = Math.random() * 50;
+        const randomZ = Math.random() * 100;
+        const moveSpeed = 0.1;
+        const moveInterval = 10;
+
+        const move = () => {
+            if (fish.position.x < randomX) {
+                fish.position.x += moveSpeed;
+            } else if (fish.position.y < randomY) {
+                fish.position.y += moveSpeed;
+            } else if (fish.position.z < randomZ) {
+                fish.position.z += moveSpeed;
+            } else {
+                fish.position.x = randomX;
+                fish.position.y = randomY;
+                fish.position.z = randomZ;
+                return;
+            }
+            setTimeout(move, moveInterval);
+        };
+        setTimeout(move, moveInterval);
     }
 
     onMount(() => {
