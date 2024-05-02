@@ -11,14 +11,13 @@
     import { Sky } from 'three/addons/objects/Sky.js';
 
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-
-
+   
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = '/src/lib/assets/hering.glb';
+    const heringPath = '../assets/hering.glb';
   
     function init() {
 
