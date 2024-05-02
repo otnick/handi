@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
     import * as THREE from 'three';
+    import waternormals from '$lib/assets/waternormals.jpg';
 
     import Stats from 'three/addons/libs/stats.module.js';
 
@@ -8,10 +9,16 @@
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { Water } from 'three/addons/objects/Water.js';
     import { Sky } from 'three/addons/objects/Sky.js';
+
+    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+    import { hering } from '$lib/assets/hering2.glb';
   
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
+
+    const fishModelPath = 'models/fish.glb';
+    
   
     function init() {
 
@@ -46,7 +53,7 @@
             {
                 textureWidth: 512,
                 textureHeight: 512,
-                waterNormals: new THREE.TextureLoader().load( '../assets/waternormals.jpg', function ( texture ) {
+                waterNormals: new THREE.TextureLoader().load( waternormals, function ( texture ) {
 
                     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
@@ -110,7 +117,7 @@
 
         //
 
-        const geometry = new THREE.BoxGeometry( 30, 30, 30 );
+        const geometry = new THREE.BoxGeometry( 30, 20, 30 );
         const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
 
         mesh = new THREE.Mesh( geometry, material );
@@ -177,7 +184,7 @@
     mesh.rotation.x = time * 0.5;
     mesh.rotation.z = time * 0.51;
 
-    water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
+    water.material.uniforms[ 'time' ].value += 1.0 / 600.0;
 
     renderer.render( scene, camera );
 
@@ -204,14 +211,5 @@
       overflow: hidden;
     }
   </style>
-  <head>
-    <title>three.js webgl - shaders - ocean</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="main.css">
-</head>
   <div id="container"></div>
-  <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl ocean
-  </div>
    
