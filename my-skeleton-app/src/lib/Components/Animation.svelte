@@ -84,16 +84,35 @@
 
                 mixer = new THREE.AnimationMixer(fish);
 
-                gltf.animations.forEach((clip: any) => {
-                    const action = renderer.animationMixer.clipAction(clip);
-                    action.play();
-                });
+                const amimations = gltf.animations;
+
+                const clip = amimations[0];
+
+                const action = mixer.clipAction(clip);
+
+                action.setEffectiveTimeScale(0.005);
+
+                action.play();
+
+                update();
+
+
+                // clips.forEach((clip: any) => {
+                //     console.log("clip", clip);
+                //     mixer.clipAction(clip).play();
+                // });
+
+                // gltf.animations.forEach((clip: any) => {
+                //     const action = renderer.animationMixer.clipAction(clip);
+                //     action.play();
+                // });
             },
             undefined,
             function ( error: any ) {
                 console.error( 'Fehler beim Laden des Fischmodells:', error );
             }
         );
+        console.log("loader", loader);
 
         // Skybox
 
@@ -198,8 +217,14 @@
     requestAnimationFrame( animate );
     render();
     stats.update();
-    mixer.update( 0.1);
+    if (mixer) {
+        update(); // Call the update function only if mixer is defined
+    }
+    }
 
+    function update(){
+        mixer.update(0.016);
+        requestAnimationFrame(update);
     }
 
     function render() {
