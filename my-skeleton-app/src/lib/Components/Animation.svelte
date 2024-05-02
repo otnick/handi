@@ -18,7 +18,7 @@
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = '/src/lib/assets/hering10.glb';
+    const heringPath = '/src/lib/assets/hering.glb';
   
     function init() {
 
@@ -90,7 +90,7 @@
 
                 const action = mixer.clipAction(clip);
 
-                action.setEffectiveTimeScale(0.005);
+                action.setEffectiveTimeScale(2);
 
                 action.play();
 
@@ -212,19 +212,24 @@
 
     }
 
+    let lastUpdateTime = 0;
+    const updateInterval = 100; // Aktualisierung alle 100 Millisekunden
+
     function animate() {
-
-    requestAnimationFrame( animate );
-    render();
-    stats.update();
-    if (mixer) {
-        update(); // Call the update function only if mixer is defined
-    }
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+        update();
     }
 
-    function update(){
-        mixer.update(0.016);
-        requestAnimationFrame(update);
+    function update() {
+        const currentTime = performance.now();
+        const deltaTime = currentTime - lastUpdateTime;
+
+        if (deltaTime >= updateInterval) {
+            mixer.update(deltaTime * 0.001); // deltaTime in Sekunden umwandeln
+            lastUpdateTime = currentTime;
+        }
     }
 
     function render() {
