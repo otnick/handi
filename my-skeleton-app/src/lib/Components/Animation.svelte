@@ -11,17 +11,19 @@
     import { Sky } from 'three/addons/objects/Sky.js';
 
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-    // import { hering } from '../assets/hering2.glb';
+
 
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
+    let mixer: any;
 
-    const heringPath = '../assets/hering2.glb';
+    const heringPath = '/src/lib/assets/hering10.glb';
   
     function init() {
 
         container = document.getElementById( 'container' );
+        
 
         //
 
@@ -77,8 +79,15 @@
             function ( gltf: any ) {
                 // Das Modell wurde erfolgreich geladen
                 const fish = gltf.scene;
-                fish.position.set( 0, 0, 0 );
+                fish.position.set( 20, 20, 10 );
                 scene.add( fish );
+
+                mixer = new THREE.AnimationMixer(fish);
+
+                gltf.animations.forEach((clip: any) => {
+                    const action = renderer.animationMixer.clipAction(clip);
+                    action.play();
+                });
             },
             undefined,
             function ( error: any ) {
@@ -189,6 +198,7 @@
     requestAnimationFrame( animate );
     render();
     stats.update();
+    mixer.update( 0.1);
 
     }
 
