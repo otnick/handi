@@ -94,18 +94,6 @@
 
                 action.play();
 
-                update();
-
-
-                // clips.forEach((clip: any) => {
-                //     console.log("clip", clip);
-                //     mixer.clipAction(clip).play();
-                // });
-
-                // gltf.animations.forEach((clip: any) => {
-                //     const action = renderer.animationMixer.clipAction(clip);
-                //     action.play();
-                // });
             },
             undefined,
             function ( error: any ) {
@@ -219,7 +207,9 @@
         requestAnimationFrame(animate);
         render();
         stats.update();
-        update();
+        if(mixer){
+            update();
+        }
     }
 
     function update() {
