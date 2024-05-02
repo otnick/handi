@@ -238,29 +238,42 @@
     }
 
     function moveFish(fish: any) {
-        const randomX = Math.random() * 10;
-        const randomY = Math.random() * 50;
-        const randomZ = Math.random() * 100;
-        const moveSpeed = 0.1;
-        const moveInterval = 10;
+    const moveSpeed = 0.1;
+    const moveInterval = 10;
+    const minWaitTime = 1000; // Minimum wait time in milliseconds
+    const maxWaitTime = 10000; // Maximum wait time in milliseconds
 
-        const move = () => {
+    const move = () => {
+        const randomX = Math.random() * (100 - (-100)) - 100;
+        const randomY = Math.random() * (50 - (-0)) - 0;
+        const randomZ = Math.random() * (100 - (-100)) - 100;
+
+        const moveOnce = () => {
             if (fish.position.x < randomX) {
                 fish.position.x += moveSpeed;
-            } else if (fish.position.y < randomY) {
+            }
+            if (fish.position.y < randomY) {
                 fish.position.y += moveSpeed;
-            } else if (fish.position.z < randomZ) {
+            }
+            if (fish.position.z < randomZ) {
                 fish.position.z += moveSpeed;
-            } else {
-                fish.position.x = randomX;
-                fish.position.y = randomY;
-                fish.position.z = randomZ;
+            }
+
+            // Check if fish reached random destination
+            if (fish.position.x >= randomX && fish.position.y >= randomY && fish.position.z >= randomZ) {
+                const waitTime = Math.random() * (maxWaitTime - minWaitTime) + minWaitTime;
+                setTimeout(move, waitTime);
                 return;
             }
-            setTimeout(move, moveInterval);
+
+            setTimeout(moveOnce, moveInterval);
         };
-        setTimeout(move, moveInterval);
-    }
+
+        moveOnce();
+    };
+
+    move();
+}
 
     onMount(() => {
         init();
