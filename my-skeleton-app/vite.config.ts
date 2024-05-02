@@ -10,4 +10,5 @@ export default defineConfig({
 			},
 		}),
 	],
+	assetsInclude: /\.(png|jpe?g|gif|webp|svg|mp4|webm|ogg|mp3|wav|flac|aac|glb)$/i,
 });

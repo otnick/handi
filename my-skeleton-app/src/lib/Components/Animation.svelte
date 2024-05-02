@@ -11,14 +11,13 @@
     import { Sky } from 'three/addons/objects/Sky.js';
 
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-    import { hering } from '$lib/assets/hering2.glb';
-  
+    // import { hering } from '../assets/hering2.glb';
+
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
 
-    const fishModelPath = 'models/fish.glb';
-    
+    const heringPath = '../assets/hering2.glb';
   
     function init() {
 
@@ -69,6 +68,23 @@
         water.rotation.x = - Math.PI / 2;
 
         scene.add( water );
+
+        // Hering
+        const loader = new GLTFLoader();
+
+        loader.load(
+            heringPath, // Pfad zum GLB-Modell
+            function ( gltf: any ) {
+                // Das Modell wurde erfolgreich geladen
+                const fish = gltf.scene;
+                fish.position.set( 0, 0, 0 );
+                scene.add( fish );
+            },
+            undefined,
+            function ( error: any ) {
+                console.error( 'Fehler beim Laden des Fischmodells:', error );
+            }
+        );
 
         // Skybox
 
