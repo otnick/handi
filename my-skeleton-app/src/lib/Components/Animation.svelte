@@ -17,7 +17,7 @@
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = '/public/hering.glb';
+    const heringPath = './hering.glb';
   
     function init() {
 
