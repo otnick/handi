@@ -19,6 +19,7 @@
 
 
     const HERINGPATH = "/hering.glb";
+    const HECHTPATH = "/Hecht.glb";
   
     function init() {
 
@@ -86,11 +87,42 @@
                     moveFish(fish);
 
                     mixer = new THREE.AnimationMixer(fish);
+                    console.log("mixer", mixer);
 
                     const amimations = gltf.animations;
-                    console.log(amimations);
+                    console.log("animation", amimations);
 
                     const clip = amimations[0];
+
+                    const action = mixer.clipAction(clip);
+
+                    action.setEffectiveTimeScale(2);
+
+                    action.play();
+
+                },
+                undefined,
+                function ( error: any ) {
+                    console.error( 'Fehler beim Laden des Fischmodells:', error );
+                }
+            );
+            loader.load(
+                HECHTPATH, // Pfad zum GLB-Modell
+                function ( gltf: any ) {
+                    // Das Modell wurde erfolgreich geladen
+                    const fish = gltf.scene;
+                    fish.position.set( size, size, size );
+                    fish.scale.set( size, size, size );
+                    scene.add( fish );
+                    moveFish(fish);
+
+                    mixer = new THREE.AnimationMixer(fish);
+                    console.log("mixer", mixer);
+
+                    const amimations = gltf.animations;
+                    console.log("animation", amimations);
+
+                    const clip = amimations[1];
 
                     const action = mixer.clipAction(clip);
 
