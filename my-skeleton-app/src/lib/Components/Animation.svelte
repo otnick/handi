@@ -19,7 +19,7 @@
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = '/src/public/hering.glb';
+    const heringPath = "/hering.glb";
   
     function init() {
 
@@ -280,24 +280,24 @@
     onMount(async () => {
             init();
             animate();
-            // const glbData = await fetchGLB();
-            // const loader = new GLTFLoader();
-            // loader.parse(glbData, '', (gltf) => {
-            //     const fish = gltf.scene;
-            //     fish.position.set(20, 20, 10);
-            //     fish.scale.set(5, 5, 5);
-            //     scene.add(fish);
-            //     moveFish(fish);
+        //     const glbData = await fetchGLB();
+        //     const loader = new GLTFLoader();
+        //     loader.parse(glbData, '', (gltf) => {
+        //         const fish = gltf.scene;
+        //         fish.position.set(20, 20, 10);
+        //         fish.scale.set(5, 5, 5);
+        //         scene.add(fish);
+        //         moveFish(fish);
 
-            //     mixer = new THREE.AnimationMixer(fish);
-            //     const animations = gltf.animations;
-            //     const clip = animations[0];
-            //     const action = mixer.clipAction(clip);
-            //     action.setEffectiveTimeScale(2);
-            //     action.play();
-            // }, (error: any) => {
-            //     console.error( error);
-            // });
+        //         mixer = new THREE.AnimationMixer(fish);
+        //         const animations = gltf.animations;
+        //         const clip = animations[0];
+        //         const action = mixer.clipAction(clip);
+        //         action.setEffectiveTimeScale(2);
+        //         action.play();
+        //     }, (error: any) => {
+        //         console.error( error);
+        //     });
         });
   
     onDestroy(() => {
