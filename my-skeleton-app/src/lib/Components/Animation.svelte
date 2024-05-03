@@ -240,49 +240,82 @@
 
     }
 
-    function moveFish(fish: any) {
-    const moveSpeed = 0.1;
-    const moveInterval = 10;
-    const minWaitTime = 1000; // Minimum wait time in milliseconds
-    const maxWaitTime = 10000; // Maximum wait time in milliseconds
 
-    const move = () => {
-        let randomDimension = Math.random() * 3;
-        const randomX = Math.random() * (100 - (-100)) - 100;
-        const randomY = Math.random() * (100 - (-100)) - 100;
-        const randomZ = Math.random() * (100 - (-100)) - 100;
-        const rotationZ = fish.rotation.y;
-        const rotationX = Math.PI/2;
+        function moveFish(fish: any) {
+            const maxPosition = 100;
+            const minPosition = -100;
+            const moveSpeed = 0.1;
+            const moveInterval = 10;
+            const minWaitTime = 1000; // Minimum wait time in milliseconds
+            const maxWaitTime = 10000; // Maximum wait time in milliseconds
 
-
-        const moveOnce = () => {
-                if (fish.position.x < randomX) {
-                    fish.rotation.y = rotationX;
-                    fish.position.x += moveSpeed;
-                }
-                if (fish.position.y < randomY) {
-                    fish.position.y += moveSpeed;
-                }
-                if (fish.position.z < randomZ) {
-                    fish.rotation.y = rotationZ;
-                    fish.position.z += moveSpeed;
-                }
-
-            // Check if fish reached random destination
-            if (fish.position.x >= randomX && fish.position.y >= randomY && fish.position.z >= randomZ) {
-                const waitTime = Math.random() * (maxWaitTime - minWaitTime) + minWaitTime;
-                setTimeout(move, waitTime);
-                return;
+            const randRange = (minimum: number, maximum: number) => {
+                return Math.random() * (maximum - minimum) + minimum;
             }
 
-            setTimeout(moveOnce, moveInterval);
-        };
+            const move = () => {
+                // final position after moving
+                const destination = {
+                    x: randRange(minPosition, maxPosition),
+                    y: randRange(minPosition, maxPosition),
+                    z: randRange(minPosition, maxPosition)
+                };
 
-        moveOnce();
-    };
+                const startPosition = {
+                    x: fish.position.x,
+                    y: fish.position.y,
+                    z: fish.position.z
+                };
 
-    move();
-}
+                // movement from start to destination
+                const completeMovement = {
+                    x: destination.x - startPosition.x,
+                    y: destination.y - startPosition.y,
+                    z: destination.z - startPosition.z
+                };
+
+                const movementLength = Math.sqrt(completeMovement.x ** 2 + completeMovement.y ** 2 + completeMovement.z ** 2);
+                // movement during every moveOnce
+                const movementStep = {
+                    x: completeMovement.x / movementLength * moveSpeed,
+                    y: completeMovement.y / movementLength * moveSpeed,
+                    z: completeMovement.z / movementLength * moveSpeed
+                };
+
+                // Calculate rotations
+                // assuming
+                //
+                //      y
+                //      |__x
+                //     /
+                //    z
+                const rotationY = Math.atan2(completeMovement.x, completeMovement.z);
+
+                let progress = 0;
+
+
+                const moveOnce = () => {
+
+                    if (progress >= 1) {
+                        const waitTime = randRange(minWaitTime, maxWaitTime);
+                        setTimeout(move, waitTime);
+                        return;
+                    }
+                    fish.rotation.y = rotationY;
+                    fish.position.x += movementStep.x;
+                    fish.position.y += movementStep.y
+                    fish.position.z += movementStep.z;
+
+                    progress += moveSpeed / movementLength;
+
+                    setTimeout(moveOnce, moveInterval);
+                };
+
+                moveOnce();
+            };
+
+            move();
+        }
 
     onMount(async () => {
             fische = await fetchFisch();
