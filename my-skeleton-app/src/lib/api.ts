@@ -113,3 +113,9 @@ export async function deleteFish(fischId: number) {
         throw new Error('Fehler beim Löschen des Fisches');
     }
 }
+
+export async function fetchGLB() {
+    const response = await fetch(`https://nickot.pythonanywhere.com/hering.glb/`);
+    const data = await response.arrayBuffer();
+    return data;
+}

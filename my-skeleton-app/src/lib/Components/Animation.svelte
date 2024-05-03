@@ -11,13 +11,15 @@
     import { Sky } from 'three/addons/objects/Sky.js';
 
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+    import { fetchGLB } from '$lib/api';
    
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = './hering.glb';
+    const heringPath = '/src/public/hering.glb';
   
     function init() {
 
@@ -275,10 +277,28 @@
     move();
 }
 
-    onMount(() => {
-        init();
-        animate();
-    });
+    onMount(async () => {
+            init();
+            animate();
+            // const glbData = await fetchGLB();
+            // const loader = new GLTFLoader();
+            // loader.parse(glbData, '', (gltf) => {
+            //     const fish = gltf.scene;
+            //     fish.position.set(20, 20, 10);
+            //     fish.scale.set(5, 5, 5);
+            //     scene.add(fish);
+            //     moveFish(fish);
+
+            //     mixer = new THREE.AnimationMixer(fish);
+            //     const animations = gltf.animations;
+            //     const clip = animations[0];
+            //     const action = mixer.clipAction(clip);
+            //     action.setEffectiveTimeScale(2);
+            //     action.play();
+            // }, (error: any) => {
+            //     console.error( error);
+            // });
+        });
   
     onDestroy(() => {
       // Aufräumen, wenn die Komponente zerstört wird
