@@ -74,37 +74,37 @@
         // Hering
         const loader = new GLTFLoader();
         for (let fisch of fische) {
-            console.log(fisch);
-        loader.load(
-            HERINGPATH, // Pfad zum GLB-Modell
-            function ( gltf: any ) {
-                // Das Modell wurde erfolgreich geladen
-                const fish = gltf.scene;
-                fish.position.set( 20, 20, 10 );
-                fish.scale.set( 5, 5, 5 );
-                scene.add( fish );
-                moveFish(fish);
+            let size = Math.random() * (7 - 1) + 1;
+            loader.load(
+                HERINGPATH, // Pfad zum GLB-Modell
+                function ( gltf: any ) {
+                    // Das Modell wurde erfolgreich geladen
+                    const fish = gltf.scene;
+                    fish.position.set( size, size, size );
+                    fish.scale.set( size, size, size );
+                    scene.add( fish );
+                    moveFish(fish);
 
-                mixer = new THREE.AnimationMixer(fish);
+                    mixer = new THREE.AnimationMixer(fish);
 
-                const amimations = gltf.animations;
+                    const amimations = gltf.animations;
+                    console.log(amimations);
 
-                const clip = amimations[0];
+                    const clip = amimations[0];
 
-                const action = mixer.clipAction(clip);
+                    const action = mixer.clipAction(clip);
 
-                action.setEffectiveTimeScale(2);
+                    action.setEffectiveTimeScale(2);
 
-                action.play();
+                    action.play();
 
-            },
-            undefined,
-            function ( error: any ) {
-                console.error( 'Fehler beim Laden des Fischmodells:', error );
-            }
-        );
+                },
+                undefined,
+                function ( error: any ) {
+                    console.error( 'Fehler beim Laden des Fischmodells:', error );
+                }
+            );
         }
-        console.log("loader", loader);
 
         // Skybox
 
@@ -247,20 +247,26 @@
     const maxWaitTime = 10000; // Maximum wait time in milliseconds
 
     const move = () => {
+        let randomDimension = Math.random() * 3;
         const randomX = Math.random() * (100 - (-100)) - 100;
         const randomY = Math.random() * (100 - (-100)) - 100;
         const randomZ = Math.random() * (100 - (-100)) - 100;
+        const rotationZ = fish.rotation.y;
+        const rotationX = Math.PI/2;
+
 
         const moveOnce = () => {
-            if (fish.position.x < randomX) {
-                fish.position.x += moveSpeed;
-            }
-            if (fish.position.y < randomY) {
-                fish.position.y += moveSpeed;
-            }
-            if (fish.position.z < randomZ) {
-                fish.position.z += moveSpeed;
-            }
+                if (fish.position.x < randomX) {
+                    fish.rotation.y = rotationX;
+                    fish.position.x += moveSpeed;
+                }
+                if (fish.position.y < randomY) {
+                    fish.position.y += moveSpeed;
+                }
+                if (fish.position.z < randomZ) {
+                    fish.rotation.y = rotationZ;
+                    fish.position.z += moveSpeed;
+                }
 
             // Check if fish reached random destination
             if (fish.position.x >= randomX && fish.position.y >= randomY && fish.position.z >= randomZ) {
