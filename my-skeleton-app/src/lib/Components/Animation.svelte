@@ -17,7 +17,7 @@
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = '/src/lib/assets/hering.glb';
+    const heringPath = '/hering.glb';
   
     function init() {
 
@@ -245,7 +245,7 @@
 
     const move = () => {
         const randomX = Math.random() * (100 - (-100)) - 100;
-        const randomY = Math.random() * (50 - (-0)) - 0;
+        const randomY = Math.random() * (100 - (-100)) - 100;
         const randomZ = Math.random() * (100 - (-100)) - 100;
 
         const moveOnce = () => {
