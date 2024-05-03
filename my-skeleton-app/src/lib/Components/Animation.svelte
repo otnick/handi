@@ -2,24 +2,23 @@
     import { onDestroy, onMount } from 'svelte';
     import * as THREE from 'three';
     import waternormals from '$lib/assets/waternormals.jpg';
-
     import Stats from 'three/addons/libs/stats.module.js';
-
     import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { Water } from 'three/addons/objects/Water.js';
     import { Sky } from 'three/addons/objects/Sky.js';
-
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+    import { fetchFisch } from '$lib/api';
 
-    import { fetchGLB } from '$lib/api';
+    let fische: any;
    
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
     let mixer: any;
 
-    const heringPath = "/hering.glb";
+
+    const HERINGPATH = "/hering.glb";
   
     function init() {
 
@@ -74,9 +73,10 @@
 
         // Hering
         const loader = new GLTFLoader();
-
+        for (let fisch of fische) {
+            console.log(fisch);
         loader.load(
-            heringPath, // Pfad zum GLB-Modell
+            HERINGPATH, // Pfad zum GLB-Modell
             function ( gltf: any ) {
                 // Das Modell wurde erfolgreich geladen
                 const fish = gltf.scene;
@@ -103,6 +103,7 @@
                 console.error( 'Fehler beim Laden des Fischmodells:', error );
             }
         );
+        }
         console.log("loader", loader);
 
         // Skybox
@@ -278,26 +279,9 @@
 }
 
     onMount(async () => {
+            fische = await fetchFisch();
             init();
             animate();
-        //     const glbData = await fetchGLB();
-        //     const loader = new GLTFLoader();
-        //     loader.parse(glbData, '', (gltf) => {
-        //         const fish = gltf.scene;
-        //         fish.position.set(20, 20, 10);
-        //         fish.scale.set(5, 5, 5);
-        //         scene.add(fish);
-        //         moveFish(fish);
-
-        //         mixer = new THREE.AnimationMixer(fish);
-        //         const animations = gltf.animations;
-        //         const clip = animations[0];
-        //         const action = mixer.clipAction(clip);
-        //         action.setEffectiveTimeScale(2);
-        //         action.play();
-        //     }, (error: any) => {
-        //         console.error( error);
-        //     });
         });
   
     onDestroy(() => {
