@@ -15,8 +15,10 @@
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
     let container: any, stats: any;
-    let mixer: any;
 
+    let mixer: any;
+    let mixers: any[] = [];
+    let mixerStarted = false;
 
     const HERINGPATH = "/hering.glb";
     const HECHTPATH = "/Hecht.glb";
@@ -72,71 +74,80 @@
 
         scene.add( water );
 
-        // Hering
+        // Fische
         const loader = new GLTFLoader();
         for (let fisch of fische) {
-            let size = Math.random() * (7 - 1) + 1;
-            loader.load(
-                HERINGPATH, // Pfad zum GLB-Modell
-                function ( gltf: any ) {
-                    // Das Modell wurde erfolgreich geladen
-                    const fish = gltf.scene;
-                    fish.position.set( size, size, size );
-                    fish.scale.set( size, size, size );
-                    scene.add( fish );
-                    moveFish(fish);
+            let sizeFactor = fisch.laenge / 10;
+            let size = Math.random() * ((6 + sizeFactor) - (1 + sizeFactor) + 1 + sizeFactor);
+            if(fisch.fischart === 1){
+                loader.load(
+                    HECHTPATH,
+                    function ( gltf: any ) {
 
-                    mixer = new THREE.AnimationMixer(fish);
-                    console.log("mixer", mixer);
+                        const fish = gltf.scene;
+                        fish.position.set( size, size, size );
+                        fish.scale.set( sizeFactor, sizeFactor, sizeFactor );
+                        scene.add( fish );
+                        moveFish(fish);
+                        
+                        mixer = new THREE.AnimationMixer(fish);
+                        mixers.push(mixer);
+                        console.log("mixer", mixers);
 
-                    const amimations = gltf.animations;
-                    console.log("animation", amimations);
+                        const amimations = gltf.animations;
+                        console.log("animation", amimations);
 
-                    const clip = amimations[0];
+                        const clip = amimations[1];
 
-                    const action = mixer.clipAction(clip);
+                        const action = mixer.clipAction(clip);
 
-                    action.setEffectiveTimeScale(2);
+                        action.setEffectiveTimeScale(2);
 
-                    action.play();
+                        action.play();
 
-                },
-                undefined,
-                function ( error: any ) {
-                    console.error( 'Fehler beim Laden des Fischmodells:', error );
-                }
-            );
-            loader.load(
-                HECHTPATH, // Pfad zum GLB-Modell
-                function ( gltf: any ) {
-                    // Das Modell wurde erfolgreich geladen
-                    const fish = gltf.scene;
-                    fish.position.set( size, size, size );
-                    fish.scale.set( size, size, size );
-                    scene.add( fish );
-                    moveFish(fish);
+                    },
+                    undefined,
+                    function ( error: any ) {
+                        console.error( 'Fehler beim Laden des Fischmodells:', error );
+                    }
+                );
+            }
+            else if(fisch.fischart === 4){
+                loader.load(
+                    HERINGPATH,
+                    function ( gltf: any ) {
 
-                    mixer = new THREE.AnimationMixer(fish);
-                    console.log("mixer", mixer);
+                        const fish = gltf.scene;
+                        fish.position.set( size, size, size );
+                        fish.scale.set( sizeFactor, sizeFactor, sizeFactor );
+                        scene.add( fish );
+                        moveFish(fish);
 
-                    const amimations = gltf.animations;
-                    console.log("animation", amimations);
+                        mixer = new THREE.AnimationMixer(fish);
+                        mixers.push(mixer);
+                        console.log("mixer", mixers);
 
-                    const clip = amimations[1];
+                        const amimations = gltf.animations;
+                        console.log("animation", amimations);
 
-                    const action = mixer.clipAction(clip);
+                        const clip = amimations[0];
 
-                    action.setEffectiveTimeScale(2);
+                        const action = mixer.clipAction(clip);
 
-                    action.play();
+                        action.setEffectiveTimeScale(2);
 
-                },
-                undefined,
-                function ( error: any ) {
-                    console.error( 'Fehler beim Laden des Fischmodells:', error );
-                }
-            );
+                        action.play();
+
+                    },
+                    undefined,
+                    function ( error: any ) {
+                        console.error( 'Fehler beim Laden des Fischmodells:', error );
+                    }
+                );
+            }
         }
+
+        mixerStarted = true;
 
         // Skybox
 
@@ -185,11 +196,11 @@
 
         //
 
-        const geometry = new THREE.BoxGeometry( 30, 20, 30 );
-        const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
+        // const geometry = new THREE.BoxGeometry( 30, 20, 30 );
+        // const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
 
-        mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+        // mesh = new THREE.Mesh( geometry, material );
+        // scene.add( mesh );
 
         //
 
@@ -243,7 +254,7 @@
         requestAnimationFrame(animate);
         render();
         stats.update();
-        if(mixer){
+        if(mixerStarted){
             update();
         }
     }
@@ -252,9 +263,11 @@
         const currentTime = performance.now();
         const deltaTime = currentTime - lastUpdateTime;
 
-        if (deltaTime >= updateInterval) {
-            mixer.update(deltaTime * 0.001); // deltaTime in Sekunden umwandeln
-            lastUpdateTime = currentTime;
+        for (let mixer of mixers) {
+            if (deltaTime >= updateInterval) {
+                mixer.update(deltaTime * 0.001); // deltaTime in Sekunden umwandeln
+                lastUpdateTime = currentTime;
+            }
         }
     }
 
@@ -262,9 +275,9 @@
 
     const time = performance.now() * 0.001;
 
-    mesh.position.y = Math.sin( time ) * 20 + 5;
-    mesh.rotation.x = time * 0.5;
-    mesh.rotation.z = time * 0.51;
+    // mesh.position.y = Math.sin( time ) * 20 + 5;
+    // mesh.rotation.x = time * 0.5;
+    // mesh.rotation.z = time * 0.51;
 
     water.material.uniforms[ 'time' ].value += 1.0 / 600.0;
 
@@ -362,12 +375,12 @@
   
   <style>
     /* Hier könntest du CSS-Stile für deine Szene definieren */
-    #scene-container {
+    #container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: fit-content;
       overflow: hidden;
     }
   </style>

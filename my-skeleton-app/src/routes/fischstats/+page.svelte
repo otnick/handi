@@ -37,6 +37,7 @@
     <NeuerFisch bind:showModal />
     <Backlight />
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center mx-20">
+        <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-4 lg:col-span-4 mt-10" href="/fischstats/angler">Fischbox</a>
         <h2 class="h2 col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-4 mt-10">Rekorde</h2>
         {#each arten as art}
         <a class="card card-2 p-4 col-span-4 sm:col-span-2 md:col-span-1 lg:col-span-1" href="/fischstats/{art.name}">{art.name}</a>
