@@ -14,11 +14,16 @@
    
     let scene: any, camera: any, renderer: any;
     let controls: any, water: any, sun: any, mesh: any;
+    let mouse = new THREE.Vector2();
+    let raycaster = new THREE.Raycaster();
+    let intersects: any[];
     let container: any, stats: any;
 
     let mixer: any;
     let mixers: any[] = [];
     let mixerStarted = false;
+
+    const infoPanel = document.createElement('div');
 
     const HERINGPATH = "/hering.glb";
     const HECHTPATH = "/Hecht.glb";
@@ -26,6 +31,16 @@
     function init() {
 
         container = document.getElementById( 'container' );
+
+        // Erstelle ein leeres Div-Element für das Info-Panel
+        infoPanel.style.position = 'absolute';
+        infoPanel.style.top = '100px';
+        infoPanel.style.left = '100px';
+        infoPanel.style.background = 'rgba(20, 9, 9, 0.8)';
+        infoPanel.style.padding = '10px';
+        infoPanel.style.borderRadius = '5px';
+        infoPanel.style.display = 'none'; // Anfangs verstecken
+        container.appendChild(infoPanel); // Füge das Info-Panel zum Container hinzu
         
 
         //
@@ -85,6 +100,7 @@
                     function ( gltf: any ) {
 
                         const fish = gltf.scene;
+                        fish.userData.isFish = true;
                         fish.position.set( size, size, size );
                         fish.scale.set( sizeFactor, sizeFactor, sizeFactor );
                         scene.add( fish );
@@ -118,6 +134,7 @@
                     function ( gltf: any ) {
 
                         const fish = gltf.scene;
+                        fish.userData.name = fisch.name;
                         fish.position.set( size, size, size );
                         fish.scale.set( sizeFactor, sizeFactor, sizeFactor );
                         scene.add( fish );
@@ -235,6 +252,7 @@
         //
 
         window.addEventListener( 'resize', onWindowResize );
+        window.addEventListener( 'mousemove', checkIntersects );
 
     }
 
@@ -245,6 +263,69 @@
 
     renderer.setSize( window.innerWidth, window.innerHeight );
 
+    }
+
+    function checkIntersects(event: MouseEvent) {
+        // Aktualisiere die Mausposition
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // Aktualisiere den Raycaster mit der aktuellen Mausposition
+        raycaster.setFromCamera(mouse, camera);
+
+        // Finde heraus, welche Objekte von der Maus getroffen werden
+        intersects = raycaster.intersectObjects(scene.children, true);
+
+        // Überprüfe, ob mindestens ein Fisch getroffen wurde
+        if (intersects.length > 0) {
+            highlightFish(intersects[0].object);
+            showInfoPanel(intersects[0].object);
+            // Markiere den ersten getroffenen Fisch und zeige das Info-Panel an
+            if (intersects[0].object.userData.isFish === true) {
+                highlightFish(intersects[0].object);
+                showInfoPanel(intersects[0].object);
+            } else {
+                // Verstecke das Info-Panel, wenn kein Fisch getroffen wurde
+                
+            }
+        } else {
+            // Verstecke das Info-Panel, wenn kein Objekt getroffen wurde
+            
+        }
+    }
+
+    function highlightFish(fish: any) {
+    // Hier könntest du den Fisch markieren, z.B. die Farbe ändern oder ein Glüheffekt hinzufügen
+    if (fish.userData.name) {
+        fish.material.emissive.set(0xFFF2CC); // Beispiel: Füge einen Glüheffekt hinzu
+        // Farbe nach 1 Sekunde zurücksetzen
+        setTimeout(() => {
+            fish.material.emissive.set(0x000000);
+        }, 1000);
+    }
+    }
+        
+
+    function showInfoPanel(fish: any) {
+        // Hier könntest du Informationen über den Fisch im Info-Panel anzeigen
+        if(fish.userData.name){
+            infoPanel.innerHTML = fish.userData.name; // Beispiel: Zeige den Namen des Fisches an
+            infoPanel.style.display = 'block'; // Zeige das Info-Panel an
+            // Postioniere das Info-Panel an der Fischposition
+            const vector = new THREE.Vector3();
+            vector.setFromMatrixPosition(fish.matrixWorld);
+            const widthHalf = window.innerWidth / 2;
+            const heightHalf = window.innerHeight / 2;
+            vector.project(camera);
+            const x = (vector.x * widthHalf) + widthHalf;
+            const y = -(vector.y * heightHalf) + heightHalf;
+            infoPanel.style.left = x + 'px';
+            infoPanel.style.top = y + 'px';
+            // Verstecke das Info-Panel nach 5 Sekunden
+            setTimeout(() => {
+                infoPanel.style.display = 'none';
+            }, 1000);
+        }
     }
 
     let lastUpdateTime = 0;
@@ -370,6 +451,7 @@
   
     onDestroy(() => {
       // Aufräumen, wenn die Komponente zerstört wird
+
     });
   </script>
   
